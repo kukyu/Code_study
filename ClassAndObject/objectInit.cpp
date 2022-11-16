@@ -1,99 +1,222 @@
-// #include<iostream>
+// #include <iostream>
 // using namespace std;
-
-// // 对象的初始化和清理
-// // 1.构造函数 进行初始化操作
-
 // class Person
 // {
 // public:
-//     // 1.构造函数
-//     // 没有返回值 不用写void
-//     // 函数与类名相同
-//     // 构造函数可以有参数 可以发生重载
-//     // 创建对象的时候 函数自动调用，而且只调用一次
 //     Person()
 //     {
-//         cout << "Person构造函数的引用" << endl;
+//         cout << "默认构造函数" << endl;
 //     }
-//     // 2.析构函数 进行清理的操作
-//     // 没有返回值 不用void
-//     // 函数名和类型名相同 在名称前加~
-//     // 函数名不可以有参数 不可以重载
-//     // 对象销毁前 会自动调用 而且智慧调用一次
+//     Person(int age, int height)
+//     {
+//         cout << "有参构造函数" << endl;
+//         m_Age = age;
+//         m_Height = new int(height); //堆区数据 new int 返回int *
+//     }
 //     ~Person()
 //     {
-//         cout << "Person 的析构函数调用" << endl;
+//         // 析构代码，将堆区开辟数据做释放操作
+//         if (m_Height != NULL)
+//         {
+//             delete m_Height;
+//             m_Height = NULL;
+//         }
+//         cout << "析构函数" << endl;
 //     }
+//     // 自己实现拷贝构造函数 解决浅拷贝带来的问题
+//     Person(const Person &p)
+//     {
+//         cout << "拷贝构造函数" << endl;
+//         m_Age = p.m_Age;
+//         // m_Height = p.m_Height; // 编译器默认实现这些代码 等号赋值操作浅拷贝
+//         //深拷贝操作
+//         m_Height = new int (*p.m_Height);
+//     }
+//     int m_Age;     //年龄
+//     int *m_Height; //身高
 // };
-// // 构造和析构函数都是必须有的实现，如果我们不提供，编译器会提供一个空实现的构造析构函数
+
 // void test01()
 // {
-//     Person P; //在在栈上的数据，test01执行完毕释放这个对象
+//     Person p1(18, 160);
+//     cout << "p1年龄:" << p1.m_Age << endl
+//          << "p1身高:" << *p1.m_Height << endl;
+//     Person p2(p1);
+//     cout << "p2年龄:" << p2.m_Age << endl
+//          << "p2身高:" << *p2.m_Height << endl;
 // }
-
 // int main()
 // {
-//     // test01();
-//     Person p;
-//     system("pause");
+//     test01();
+//     return 0;
+// }
+
+// #include <iostream>
+// using namespace std;
+// class Person
+// {
+// public:
+// //    // 传统初始化操作
+// //     Person(int a, int b, int c)
+// //     {
+// //         m_A =a;
+// //         m_B = b;
+// //         m_C = c;
+
+// //         cout << "有参构造函数" << endl;
+// //     }
+//     int m_A;
+//     int m_B;
+//     int m_C;
+//     // 初始化列表初始化属性
+//     // Person():m_A(10), m_B(20), m_C(20)
+//     Person(int a, int b, int c):m_A(a), m_B(b), m_C(c)
+//     {
+
+//     }
+// };
+
+// void test01()
+// {
+//     // Person p1(10, 20, 20); // 传统初始化
+//     // Person p1; // 初始化列表
+//     Person p1(10,20,20);
+//     cout << "mA:" << p1.m_A << endl
+//          << "mB:" << p1.m_B << endl
+//          << "mC:" << p1.m_C << endl;
+// }
+// int main()
+// {
+//     test01();
+//     return 0;
+// }
+
+// #include <iostream>
+// using namespace std;
+// #include <string.h>
+// //类对象作为类成员
+
+// // 手机类
+// class Phone
+// {
+// public:
+//     //手机名称
+//     Phone(string pName)
+//     {
+//         m_Pname = pName;
+//         cout << "Phone的构造函数调用" << endl;
+//     }
+//     string m_Pname;
+// };
+// // 人类
+// class Person
+// {
+// public:
+//     Person(string name, string pName) : m_Name(name), m_Phone(pName)
+//     {
+//         cout << "Person 的构造函数调用" << endl;
+//     }
+//     // 姓名
+//     string m_Name;
+//     // 手机
+//     Phone m_Phone;
+// };
+// // 当其他类对象作为本类成员,构造时候先构造类对象, 在构造自身
+// // 析构函数顺序与构造顺序相反
+// void test01()
+// {
+//     Person p("张三", "ipone 100 MAX");
+//     cout << p.m_Name << "拿着" << p.m_Phone.m_Pname << endl;
+// }
+// int main()
+// {
+//     test01();
+//     // system("pause");
+//     return 0;
 // }
 
 // #include <iostream>
 // using namespace std;
 
-// // 1.构造函数分类及调用
-// // 分类
+// // 静态成员变量
 // class Person
 // {
 // public:
-//     // 普通构造函数
-//     Person()
-//     {
-//         cout << "这是无参构造函数调用" << endl;
-//     }
-//     Person(int a)
-//     {
-//         age = a;
-//         cout << "这是有参构造函数调用" << endl;
-//     }
-//     // 拷贝构造函数
-//     Person(const Person &p)
-//     {
-//         // 将传入的人身上的所有属性,拷贝到我身上
-//         age = p.age;
-//         cout << "这是拷贝构造函数调用" << endl;
-//     }
-
-//     // 析构函数
-//     ~Person()
-//     {
-//         cout << "这是析构函数" << endl;
-//     }
-//     int age;
+//     //所有对象都共享同一份数据
+//     // 编译阶段分配内存
+//     // 类内声明,类外初始化操作
+//     static int m_A;
+// // 静态成员变量也是有访问权限的
+// private:
+//     static int m_B;
 // };
-// // 调用
+// // int Person :: m_B = 200; // private 不可访问
+// int Person :: m_A = 100; //类外初始化
+
 // void test01()
 // {
-//     // // 1.括号法
-//     // // 注意事项1 调用默认构造函数时,不要加(),会被编译器认为是函数的声明Person p1();
-//     // Person p1;     //默认函数构造
-//     // Person p2(10); // 有参构造函数
-//     // Person p3(p2); // 拷贝构造函数
-//     // 2.显示法
-//     Person p1;
-//     Person p2 = Person(10); // 有参构造
-//     Person p3 = Person(p3); // 拷贝构造
-//     // Person(10); //匿名对象 特点:当前行执行结束后,系统会自动回收匿名对象
-//     // cout << "aaa" << endl;
-//     // 注意事项2 不要利用拷贝构造函数初始化匿名对象 编译器会认为 Person(p3) === Person(p3) 对象声明
-//     // 3.隐式转换法
-//     Person p4 = 10; // 相当于写了 Person p4 = Person(10);
-//     Person p5 = p4; // 拷贝构造
+//     Person p;
+//     cout << p.m_A << endl;
+//     Person p2;
+//     p2.m_A = 200;
+//     cout << p.m_A << endl;
 // }
+// void test02()
+// {
+//     // 静态成员变量 不属于某个对象上 所有对象都共享同一份数据
+//     // 因此静态变量有两种访问方式
+//     // 1.通过对象名进行访问
+//     Person p;
+//     cout << p.m_A << endl;
 
+//     // 2. 通过类名进行访问
+//     cout << Person::m_A << endl;
+// }
 // int main()
 // {
-//     test01();
-//     system("pause");
+//     // test01();
+//     test02();
+//     return 0;
 // }
+
+#include <iostream>
+using namespace std;
+
+// 静态成员函数
+//所有对象都共享同一函数
+// 静态成员函数只能访问静态成员变量
+class Person
+{
+public:
+    static void func()
+    {
+        m_A = 100; // 静态成员函数访问静态成员变量
+        // m_B = 200; // 不可访问非静态成员变量
+        cout << "static void functiop 调用" << endl;
+    }
+    static int m_A; //静态成员变量
+    int m_B;        //非静态成员变量
+    // 静态成员函数也是有访问权限的
+private:
+    static void func()
+    {
+        m_A = 100; // 静态成员函数访问静态成员变量
+        // m_B = 200; // 不可访问非静态成员变量
+        cout << "static void functiop 调用" << endl;
+    }
+};
+int Person ::m_A = 0;
+//有两种访问方式
+void test01()
+{
+    // 1.通过对象进行访问
+    Person p;
+    p.func();
+    // 2，通过类名进行访问
+    Person ::func();
+}
+int main()
+{
+    test01();
+    return 0;
+}

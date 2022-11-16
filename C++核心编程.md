@@ -1,6 +1,6 @@
 # C++核心编程
 
-## 内存分区模型
+## 1 内存分区模型
 
 ### 内存运行前
 
@@ -51,7 +51,7 @@ int main()
 }
 ```
 
-## 引用
+## 2 引用
 
 ### 给变量取别名
 
@@ -151,7 +151,7 @@ int main()
 }
 ```
 
-## 函数提高
+## 3 函数提高
 
 ### 函数默认参数
 
@@ -245,9 +245,9 @@ int main()
 
 引用作为函数重载的条件
 
-## 类和对象
+## 4 类和对象
 
-### 封装
+### 4.1 封装
 
 ```C++
 #include <iostream>
@@ -681,5 +681,400 @@ int main()
 {
     test01();
     system("pause");
+}
+```
+
+#### 4.2.3 拷贝构造函数调用时机
+
+C++拷贝构造函数一般三种情况
+
+```C++
+#include <iostream>
+using namespace std;
+
+class Person
+{
+public:
+    int m_Age;
+    Person()
+    {
+        cout << "默认构造函数" << endl;
+    }
+    Person(int age)
+    {
+        m_Age = age;
+        cout << "有参构造函数" << endl;
+    }
+    Person(const Person &p)
+    {
+        m_Age = p.m_Age;
+        cout << "拷贝构造函数" << endl;
+    }
+    ~Person()
+    {
+        cout << "析构函数" << endl;
+    }
+};
+// 构造函数的调用时机
+// 1.使用一个已经创建完毕的对象来初始化对象
+void test01()
+{
+    Person p1(20);
+    Person p2(p1);
+    cout << "p2的年龄:" << p2.m_Age << endl;
+}
+// 2.值传递的方式给函数参数传值
+void doWork(Person p)
+{
+}
+void test02()
+{
+    Person p;
+    doWork(p);
+
+}
+// 3.值方式返回函数对象
+Person doWork2()
+{
+    Person p1;
+    return p1;
+}
+void test03()
+{
+    Person p = doWork2();
+}
+int main()
+{
+    // test01();
+    // test02();
+    test03();
+    system("pause");
+    return 0;
+}
+```
+
+#### 4.2.4 构造函数调用规则
+
+默认情况下，C++编译器至少给一类添加 3 个函数
+
+1.默认构造函数(无参，函数体为空)
+
+2.默认析构函数(无参 函数体为空)
+
+3.默认拷贝构造函数,对属性进行值拷贝
+
+```C++
+#include <iostream>
+using namespace std;
+class Person
+{
+    // 构造函数的调用规则
+    // 1.创建一个类,c++会添加三个函数
+    // 默认函数
+    // 析构函数
+    // 拷贝构造
+
+    // 2.如果我们写了有参构造函数,编译器不在提供默认构造,依然提供拷贝构造
+    // test02
+public:
+    // Person()
+    // {
+    //     cout << "默认构造函数" << endl;
+    // }
+    Person(int age)
+    {
+        cout << "有参构造函数" << endl;
+        m_Age = age;
+    }
+    ~Person()
+    {
+        cout << "析构函数" << endl;
+    }
+    Person(const Person &p)
+    {
+        cout << "拷贝构造函数" << endl;
+        m_Age = p.m_Age;
+    }
+    int m_Age;
+};
+
+void test01()
+{
+    Person p;
+    p.m_Age = 19;
+    Person p2(p);
+    cout << "p2年龄:" << p2.m_Age << endl;
+}
+void test02()
+{
+    Person p;
+}
+
+int main()
+{
+    // test01();
+    test02();
+    return 0;
+}
+```
+
+#### 4.2.5 深拷贝与浅拷贝
+
+浅拷贝带来的问题就是堆区的内存被重复释放
+
+```C++
+#include <iostream>
+using namespace std;
+class Person
+{
+public:
+    Person()
+    {
+        cout << "默认构造函数" << endl;
+    }
+    Person(int age, int height)
+    {
+        cout << "有参构造函数" << endl;
+        m_Age = age;
+        m_Height = new int(height); //堆区数据 new int 返回int *
+    }
+    ~Person()
+    {
+        // 析构代码，将堆区开辟数据做释放操作
+        if (m_Height != NULL)
+        {
+            delete m_Height;
+            m_Height = NULL;
+        }
+        cout << "析构函数" << endl;
+    }
+    // 自己实现拷贝构造函数 解决浅拷贝带来的问题
+    Person(const Person &p)
+    {
+        cout << "拷贝构造函数" << endl;
+        m_Age = p.m_Age;
+        // m_Height = p.m_Height; // 编译器默认实现这些代码 等号赋值操作浅拷贝
+        //深拷贝操作
+        m_Height = new int (*p.m_Height);
+    }
+    int m_Age;     //年龄
+    int *m_Height; //身高
+};
+
+void test01()
+{
+    Person p1(18, 160);
+    cout << "p1年龄:" << p1.m_Age << endl
+         << "p1身高:" << *p1.m_Height << endl;
+    Person p2(p1);
+    cout << "p2年龄:" << p2.m_Age << endl
+         << "p2身高:" << *p2.m_Height << endl;
+}
+int main()
+{
+    test01();
+    return 0;
+}
+```
+
+#### 4.2.6 初始化列表
+
+作用：用来初始化属性
+
+语法：构造函数():属性 1(值 1),属性 2(值 2).....{}
+
+```C++
+
+#include <iostream>
+using namespace std;
+class Person
+{
+public:
+//    // 传统初始化操作
+//     Person(int a, int b, int c)
+//     {
+//         m_A =a;
+//         m_B = b;
+//         m_C = c;
+
+//         cout << "有参构造函数" << endl;
+//     }
+    int m_A;
+    int m_B;
+    int m_C;
+    // 初始化列表初始化属性
+    // Person():m_A(10), m_B(20), m_C(20)
+    Person(int a, int b, int c):m_A(a), m_B(b), m_C(c)
+    {
+
+    }
+};
+
+void test01()
+{
+    // Person p1(10, 20, 20); // 传统初始化
+    // Person p1; // 初始化列表
+    Person p1(10,20,20);
+    cout << "mA:" << p1.m_A << endl
+         << "mB:" << p1.m_B << endl
+         << "mC:" << p1.m_C << endl;
+}
+int main()
+{
+    test01();
+    return 0;
+}
+```
+
+#### 4.2.7 类对象作为类成员
+
+C++ 类中的成员可以是另一个类的的对象,我们称该成员为对象成员.
+
+```C++
+#include <iostream>
+using namespace std;
+#include <string.h>
+//类对象作为类成员
+
+// 手机类
+class Phone
+{
+public:
+    //手机名称
+    Phone(string pName)
+    {
+        m_Pname = pName;
+        cout << "Phone的构造函数调用" << endl;
+    }
+    string m_Pname;
+};
+// 人类
+class Person
+{
+public:
+    Person(string name, string pName) : m_Name(name), m_Phone(pName)
+    {
+        cout << "Person 的构造函数调用" << endl;
+    }
+    // 姓名
+    string m_Name;
+    // 手机
+    Phone m_Phone;
+};
+// 当其他类对象作为本类成员,构造时候先构造类对象, 在构造自身
+// 析构函数顺序与构造顺序相反
+void test01()
+{
+    Person p("张三", "ipone 100 MAX");
+    cout << p.m_Name << "拿着" << p.m_Phone.m_Pname << endl;
+}
+int main()
+{
+    test01();
+    // system("pause");
+    return 0;
+}
+```
+
+#### 4.2.8 静态成员
+
+静态成员变量
+
+- 所有对象共享同一份数据
+- 在编译阶段分配内存
+- 类内声明,类外初始化
+
+静态成员函数
+
+- 所有对象共享同一个函数
+- 静态成员函数只能访问静态成员变量
+
+```C++
+#include <iostream>
+using namespace std;
+
+// 静态成员变量
+class Person
+{
+public:
+    //所有对象都共享同一份数据
+    // 编译阶段分配内存
+    // 类内声明,类外初始化操作
+    static int m_A;
+// 静态成员变量也是有访问权限的
+private:
+    static int m_B;
+};
+// int Person :: m_B = 200; // private 不可访问
+int Person :: m_A = 100; //类外初始化
+
+void test01()
+{
+    Person p;
+    cout << p.m_A << endl;
+    Person p2;
+    p2.m_A = 200;
+    cout << p.m_A << endl;
+}
+void test02()
+{
+    // 静态成员变量 不属于某个对象上 所有对象都共享同一份数据
+    // 因此静态变量有两种访问方式
+    // 1.通过对象名进行访问
+    Person p;
+    cout << p.m_A << endl;
+
+    // 2. 通过类名进行访问
+    cout << Person::m_A << endl;
+}
+int main()
+{
+    // test01();
+    test02();
+    return 0;
+}
+```
+
+```C++
+#include <iostream>
+using namespace std;
+
+// 静态成员函数
+//所有对象都共享同一函数
+// 静态成员函数只能访问静态成员变量
+class Person
+{
+public:
+    static void func()
+    {
+        m_A = 100; // 静态成员函数访问静态成员变量
+        // m_B = 200; // 不可访问非静态成员变量
+        cout << "static void functiop 调用" << endl;
+    }
+    static int m_A; //静态成员变量
+    int m_B;        //非静态成员变量
+    // 静态成员函数也是有访问权限的
+private:
+    static void func()
+    {
+        m_A = 100; // 静态成员函数访问静态成员变量
+        // m_B = 200; // 不可访问非静态成员变量
+        cout << "static void functiop 调用" << endl;
+    }
+};
+int Person ::m_A = 0;
+//有两种访问方式
+void test01()
+{
+    // 1.通过对象进行访问
+    Person p;
+    p.func();
+    // 2，通过类名进行访问
+    Person ::func();
+}
+int main()
+{
+    test01();
+    return 0;
 }
 ```

@@ -7,5 +7,6 @@ int main()
     string name = "你好";
     cout << a << endl;
     cout << name << endl;
-    return 0;
+    system("pause");
+    return 0; 
 }
