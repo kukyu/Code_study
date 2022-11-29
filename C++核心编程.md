@@ -1211,16 +1211,16 @@ int main()
 
 常函数
 
-- 成员函数后加const 我们称之为常函数
+- 成员函数后加 const 我们称之为常函数
 - 常函数内不可以修改成员属性
-- 成员属性声明中加上关键字mutable后,在常函数后依然可以修改
+- 成员属性声明中加上关键字 mutable 后,在常函数后依然可以修改
 
 常对象
 
-- 声明对象加上const称该对象为常对象
+- 声明对象加上 const 称该对象为常对象
 - 常对象只能调用常函数
 
-``` C++
+```C++
 #include <iostream>
 using namespace std;
 // 常函数
@@ -1262,6 +1262,174 @@ int main()
 {
     // test01();
     test02();
+    return 0;
+}
+```
+
+### 4.4 友元
+
+目的让一个函数和类 访问另一个类中私有变量
+
+全局函数做友元
+
+类做友元
+
+成员函数做友元
+
+#### 4.4.1 全局函数做友元
+
+```C++
+#include <iostream>
+using namespace std;
+#include <string.h>
+class Building
+{
+    // 友元可以访问私有
+    friend void goodGay(Building *building);
+    // 建筑物的类
+public:
+    Building()
+    {
+        m_SettingRoom = "客厅";
+        m_BedRoom = "卧室";
+    }
+
+public:
+    string m_SettingRoom; // 客厅
+private:
+    string m_BedRoom; // 卧室
+};
+// 全局函数
+void goodGay(Building *building)
+{
+    cout << "好基友全局函数 正在访问:" << building->m_SettingRoom << endl;
+    cout << "好基友全局函数 正在访问:" << building->m_BedRoom << endl; // 私有属性不可访问
+}
+void test01()
+{
+    Building building;
+    goodGay(&building);
+}
+int main()
+{
+    test01();
+    return 0;
+}
+```
+
+#### 4.4.2 类做友元
+
+```C++
+#include <iostream>
+using namespace std;
+#include <string.h>
+class Building
+{
+    // 类做友元
+    friend class GoodGay;
+public:
+    Building();
+public:
+    string m_SettingRoom; //客厅
+private:
+    string m_BedRoom; // 卧室
+};
+// 类做友元
+class GoodGay
+{
+public:
+    GoodGay();
+public:
+    void visit(); //参观函数 访问building的属性
+    Building *building;
+};
+// 类外写成员函数
+Building::Building()
+{
+    m_SettingRoom = "客厅";
+    m_BedRoom = "卧室";
+}
+GoodGay::GoodGay()
+{
+    //创建建筑物的对象
+    building = new Building;
+}
+void GoodGay::visit()
+{
+    cout << "好基友类正在访问：" << building ->m_SettingRoom << endl;
+    cout << "好基友类正在访问：" << building ->m_BedRoom << endl;
+}
+void test01()
+{
+    GoodGay hh;
+    hh.visit();
+}
+int main()
+{
+    test01();
+    return 0;
+}
+```
+
+#### 4.4.3 成员函数做友元
+
+此代码运行有问题 不想看 20221129
+
+```C++
+#include <iostream>
+using namespace std;
+#include <string.h>
+class GoodGay
+{
+public:
+    GoodGay();
+    void visit1(); //访问building的私有属性
+    void visit2(); //不可访问building的私有属性
+private:
+    Building *building;
+};
+class Building
+{
+    // 友元
+    friend void GoodGay::visit1();
+public:
+    Building();
+public:
+    string m_SettingRoom; //客厅
+private:
+    string m_BedRoom; // 卧室
+};
+
+// 类外写成员函数
+Building::Building()
+{
+    m_SettingRoom = "客厅";
+    m_BedRoom = "卧室";
+}
+GoodGay::GoodGay()
+{
+    //创建建筑物的对象
+    building = new Building;
+}
+void GoodGay::visit1()
+{
+    cout << "visit1正在访问：" << building ->m_SettingRoom << endl;
+    cout << "visit1正在访问：" << building ->m_BedRoom << endl;
+}
+void GoodGay::visit2()
+{
+    cout << "visit2正在访问：" << building ->m_SettingRoom << endl;
+    // cout << "visit2正在访问：" << building ->m_BedRoom << endl;
+}
+void test01()
+{
+    GoodGay hh;
+    hh.visit1();
+    hh.visit2();
+}
+int main()
+{
+    test01();
     return 0;
 }
 ```

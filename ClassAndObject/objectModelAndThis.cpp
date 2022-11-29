@@ -102,49 +102,190 @@
 //     return 0;
 // }
 
+// #include <iostream>
+// using namespace std;
+// // 常函数
+// class Person
+// {
+// public:
+//     // this指针的本质 是指针常量 指针的指向是不可修改的
+//     // 在成员函数后面加const ,修饰的是this指针指向 让指针指向的值不可以修改
+//     void showPerson() const
+//     {
+//         // this->m_A = 100; //不可以修改
+//         // this = NULL; //this 指针不可以修改指针指向
+//         this->m_B = 100;
+//         cout << m_B << endl;
+//         cout << m_A << endl;
+//     }
+//     void func(){}
+
+//     int m_A;
+//     mutable int m_B; //加上关键字可以修改
+// };
+// void test01()
+// {
+//     Person p;
+//     p.showPerson();
+// }
+// // 常对象
+// void test02()
+// {
+//     const Person p; // 在对象前加const ,变为常对象
+//     // p.m_A = 100;
+//     p.m_B = 200;
+//     cout << p.m_B << endl;
+//     // 常对象只能调用常函数
+//     p.showPerson();
+//     p.func();// 不可调用
+// }
+// int main()
+// {
+//     // test01();
+//     test02();
+//     return 0;
+// }
+
+// #include <iostream>
+// using namespace std;
+// #include <string.h>
+// class Building
+// {
+//     // 友元可以访问私有
+//     friend void goodGay(Building *building);
+//     // 建筑物的类
+// public:
+//     Building()
+//     {
+//         m_SettingRoom = "客厅";
+//         m_BedRoom = "卧室";
+//     }
+
+// public:
+//     string m_SettingRoom; // 客厅
+// private:
+//     string m_BedRoom; // 卧室
+// };
+// // 全局函数
+// void goodGay(Building *building)
+// {
+//     cout << "好基友全局函数 正在访问:" << building->m_SettingRoom << endl;
+//     cout << "好基友全局函数 正在访问:" << building->m_BedRoom << endl; // 私有属性不可访问
+// }
+// void test01()
+// {
+//     Building building;
+//     goodGay(&building);
+// }
+// int main()
+// {
+//     test01();
+//     return 0;
+// }
+
+// #include <iostream>
+// using namespace std;
+// #include <string.h>
+// class Building
+// {
+//     // 类做友元
+//     friend class GoodGay;
+// public:
+//     Building();
+// public:
+//     string m_SettingRoom; //客厅
+// private:
+//     string m_BedRoom; // 卧室
+// };
+// // 类做友元
+// class GoodGay
+// {
+// public:
+//     GoodGay();
+// public:
+//     void visit(); //参观函数 访问building的属性
+//     Building *building;
+// };
+// // 类外写成员函数
+// Building::Building()
+// {
+//     m_SettingRoom = "客厅";
+//     m_BedRoom = "卧室";
+// }
+// GoodGay::GoodGay()
+// {
+//     //创建建筑物的对象
+//     building = new Building;
+// }
+// void GoodGay::visit()
+// {
+//     cout << "好基友类正在访问：" << building ->m_SettingRoom << endl;
+//     cout << "好基友类正在访问：" << building ->m_BedRoom << endl;
+// }
+// void test01()
+// {
+//     GoodGay hh;
+//     hh.visit();
+// }
+// int main()
+// {
+//     test01();
+//     return 0;
+// }
+
 #include <iostream>
 using namespace std;
-// 常函数
-class Person
+#include <string.h>
+class GoodGay
 {
 public:
-    // this指针的本质 是指针常量 指针的指向是不可修改的
-    // 在成员函数后面加const ,修饰的是this指针指向 让指针指向的值不可以修改
-    void showPerson() const
-    {
-        // this->m_A = 100; //不可以修改
-        // this = NULL; //this 指针不可以修改指针指向
-        this->m_B = 100;
-        cout << m_B << endl;
-        cout << m_A << endl;
-    }
-    void func(){}
-
-    int m_A;
-    mutable int m_B; //加上关键字可以修改
+    GoodGay();
+    void visit1(); //访问building的私有属性
+    void visit2(); //不可访问building的私有属性
+private:
+    Building *building;
 };
+class Building
+{
+    // 友元
+    friend void GoodGay::visit1();
+public:
+    Building();
+public:
+    string m_SettingRoom; //客厅
+private:
+    string m_BedRoom; // 卧室
+};
+
+// 类外写成员函数
+Building::Building()
+{
+    m_SettingRoom = "客厅";
+    m_BedRoom = "卧室";
+}
+GoodGay::GoodGay()
+{
+    //创建建筑物的对象
+    building = new Building;
+}
+void GoodGay::visit1()
+{
+    cout << "visit1正在访问：" << building ->m_SettingRoom << endl;
+    cout << "visit1正在访问：" << building ->m_BedRoom << endl;
+}
+void GoodGay::visit2()
+{
+    cout << "visit2正在访问：" << building ->m_SettingRoom << endl;
+    // cout << "visit2正在访问：" << building ->m_BedRoom << endl;
+}
 void test01()
 {
-    Person p;
-    p.showPerson();
-}
-// 常对象
-void test02()
-{
-    const Person p; // 在对象前加const ,变为常对象
-    // p.m_A = 100;
-    p.m_B = 200;
-    cout << p.m_B << endl;
-    // 常对象只能调用常函数
-    p.showPerson();
-    p.func();// 不可调用
+    GoodGay hh;
+    hh.visit1();
+    hh.visit2();
 }
 int main()
 {
-    // test01();
-    test02();
+    test01();
     return 0;
 }
-
-
-
