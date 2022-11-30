@@ -1433,3 +1433,76 @@ int main()
     return 0;
 }
 ```
+
+### 4.5 运算符重载
+
+运算符重载概念：对已有的运算符重新进行定义，赋予另一种功能，以适应不同的功能
+
+对于内置的数据类型编译器知道如何运算 int a = 10; int b = 10; int c = a + b;
+
+
+
+#### 4.5.1 加法运算符重载
+
+``` C++
+# include<iostream>
+using namespace std;
+// 加号运算符重载
+class Person
+{
+public:
+    // // 1.成员函数重载+号
+    // Person operator+(Person &p)
+    // {
+    //     Person temp;
+    //     temp.m_A = this ->m_A + p.m_A;
+    //     temp.m_B = this ->m_B + p.m_B;
+    //     return  temp;
+    // }
+    // 成员函数本质调用 Person p3 = p1.operator+(p2);
+    int m_A;
+    int m_B;
+
+};
+// 全局函数重载
+// 本质调用 Person p3 = operator+(p1, p2)
+Person operator+ (Person &p1, Person &p2)
+{
+        Person temp;
+        temp.m_A = p1.m_A + p2.m_A;
+        temp.m_B = p1.m_B + p2.m_B;
+        return  temp;
+}
+// 函数重载
+Person operator+ (Person &p1, int num)
+{
+        Person temp;
+        temp.m_A = p1.m_A + num;
+        temp.m_B = p1.m_B + num;
+        return  temp;
+}
+void test01()
+{
+    Person p1;
+    p1.m_A = 10;
+    p1.m_B = 10;
+    Person p2;
+    p2.m_A = 10;
+    p2.m_B = 10;
+
+    Person p3 = p1 + p2;
+    Person p4 = p1 + 100; // Person + int
+    cout << "p3.m_A=" << p3.m_A << endl;
+    cout << "p3.m_B=" << p3.m_B << endl;
+    cout << "p4.m_A=" << p4.m_A << endl;
+    cout << "p4.m_B=" << p4.m_B << endl;
+}
+
+int main()
+{
+    test01();
+    return 0;
+}
+```
+
+

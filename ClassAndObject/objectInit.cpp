@@ -179,42 +179,101 @@
 //     return 0;
 // }
 
-#include <iostream>
-using namespace std;
+// #include <iostream>
+// using namespace std;
 
-// 静态成员函数
-//所有对象都共享同一函数
-// 静态成员函数只能访问静态成员变量
+// // 静态成员函数
+// //所有对象都共享同一函数
+// // 静态成员函数只能访问静态成员变量
+// class Person
+// {
+// public:
+//     static void func()
+//     {
+//         m_A = 100; // 静态成员函数访问静态成员变量
+//         // m_B = 200; // 不可访问非静态成员变量
+//         cout << "static void functiop 调用" << endl;
+//     }
+//     static int m_A; //静态成员变量
+//     int m_B;        //非静态成员变量
+//     // 静态成员函数也是有访问权限的
+// private:
+//     static void func()
+//     {
+//         m_A = 100; // 静态成员函数访问静态成员变量
+//         // m_B = 200; // 不可访问非静态成员变量
+//         cout << "static void functiop 调用" << endl;
+//     }
+// };
+// int Person ::m_A = 0;
+// //有两种访问方式
+// void test01()
+// {
+//     // 1.通过对象进行访问
+//     Person p;
+//     p.func();
+//     // 2，通过类名进行访问
+//     Person ::func();
+// }
+// int main()
+// {
+//     test01();
+//     return 0;
+// }
+
+# include<iostream>
+using namespace std;
+// 加号运算符重载
 class Person
 {
 public:
-    static void func()
-    {
-        m_A = 100; // 静态成员函数访问静态成员变量
-        // m_B = 200; // 不可访问非静态成员变量
-        cout << "static void functiop 调用" << endl;
-    }
-    static int m_A; //静态成员变量
-    int m_B;        //非静态成员变量
-    // 静态成员函数也是有访问权限的
-private:
-    static void func()
-    {
-        m_A = 100; // 静态成员函数访问静态成员变量
-        // m_B = 200; // 不可访问非静态成员变量
-        cout << "static void functiop 调用" << endl;
-    }
+    // // 1.成员函数重载+号
+    // Person operator+(Person &p)
+    // {
+    //     Person temp;
+    //     temp.m_A = this ->m_A + p.m_A;
+    //     temp.m_B = this ->m_B + p.m_B;
+    //     return  temp;
+    // }
+    // 成员函数本质调用 Person p3 = p1.operator+(p2);
+    int m_A;
+    int m_B;
+
 };
-int Person ::m_A = 0;
-//有两种访问方式
+// 全局函数重载
+// 本质调用 Person p3 = operator+(p1, p2)
+Person operator+ (Person &p1, Person &p2)
+{
+        Person temp;
+        temp.m_A = p1.m_A + p2.m_A;
+        temp.m_B = p1.m_B + p2.m_B;
+        return  temp;
+}
+// 函数重载
+Person operator+ (Person &p1, int num)
+{
+        Person temp;
+        temp.m_A = p1.m_A + num;
+        temp.m_B = p1.m_B + num;
+        return  temp;
+}
 void test01()
 {
-    // 1.通过对象进行访问
-    Person p;
-    p.func();
-    // 2，通过类名进行访问
-    Person ::func();
+    Person p1;
+    p1.m_A = 10;
+    p1.m_B = 10;
+    Person p2;
+    p2.m_A = 10;
+    p2.m_B = 10;
+
+    Person p3 = p1 + p2;
+    Person p4 = p1 + 100; // Person + int
+    cout << "p3.m_A=" << p3.m_A << endl;
+    cout << "p3.m_B=" << p3.m_B << endl;
+    cout << "p4.m_A=" << p4.m_A << endl;
+    cout << "p4.m_B=" << p4.m_B << endl;
 }
+
 int main()
 {
     test01();
