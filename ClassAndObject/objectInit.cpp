@@ -221,61 +221,294 @@
 //     return 0;
 // }
 
-# include<iostream>
+// # include<iostream>
+// using namespace std;
+// // 加号运算符重载
+// class Person
+// {
+// public:
+//     // // 1.成员函数重载+号
+//     // Person operator+(Person &p)
+//     // {
+//     //     Person temp;
+//     //     temp.m_A = this ->m_A + p.m_A;
+//     //     temp.m_B = this ->m_B + p.m_B;
+//     //     return  temp;
+//     // }
+//     // 成员函数本质调用 Person p3 = p1.operator+(p2);
+//     int m_A;
+//     int m_B;
+
+// };
+// // 全局函数重载
+// // 本质调用 Person p3 = operator+(p1, p2)
+// Person operator+ (Person &p1, Person &p2)
+// {
+//         Person temp;
+//         temp.m_A = p1.m_A + p2.m_A;
+//         temp.m_B = p1.m_B + p2.m_B;
+//         return  temp;
+// }
+// // 函数重载
+// Person operator+ (Person &p1, int num)
+// {
+//         Person temp;
+//         temp.m_A = p1.m_A + num;
+//         temp.m_B = p1.m_B + num;
+//         return  temp;
+// }
+// void test01()
+// {
+//     Person p1;
+//     p1.m_A = 10;
+//     p1.m_B = 10;
+//     Person p2;
+//     p2.m_A = 10;
+//     p2.m_B = 10;
+
+//     Person p3 = p1 + p2;
+//     Person p4 = p1 + 100; // Person + int
+//     cout << "p3.m_A=" << p3.m_A << endl;
+//     cout << "p3.m_B=" << p3.m_B << endl;
+//     cout << "p4.m_A=" << p4.m_A << endl;
+//     cout << "p4.m_B=" << p4.m_B << endl;
+// }
+
+// int main()
+// {
+//     test01();
+//     return 0;
+// }
+
+// #include<iostream>
+// using namespace std;
+
+// class Person
+// {
+// public:
+//     Person(int a, int b)
+//     {
+//         m_A = a;
+//         m_B = b;
+//     }
+//     friend ostream & operator<<(ostream & cout, Person &p);
+// private:
+
+//     // 利用成员函数重载左移运算符
+//     // 无法利用成员函数重载<<运算符 因为无法实现 cout在左侧
+//     // void operator<< (cout)
+//     int m_A;
+//     int m_B;
+// };
+// // 只能利用全局函数来左移重载运算符
+// ostream & operator<<(ostream & cout, Person &p) // 本质 operator<<(cout, p) 简化 cout << p
+// {
+//     cout << "m_A=" << p.m_A << "m_B=" << p.m_B;
+//     return cout;
+// }
+// void test01()
+// {
+//     Person p(10, 10);
+//     cout << p << endl;
+// }
+// int main()
+// {
+//     test01();
+//     return 0;
+// }
+
+// #include <iostream>
+// using namespace std;
+// // 重载递增运算符
+// //自定义整型
+
+// class MyInterger
+// {
+//     friend ostream &operator<<(ostream &cout, MyInterger myint);
+
+// public:
+//     MyInterger()
+//     {
+//         m_Num = 0;
+//     }
+//     // 重载前置++运算符
+//     MyInterger operator++()
+//     {
+//         ++m_Num;
+//         return *this;
+//     }
+//     // 重载后置++运算符
+//     MyInterger operator++(int)  //int 占位参数 区分前置/后置递增
+//     {
+//         MyInterger temp = *this;
+//         m_Num++;
+//         return temp;
+//     }
+
+// private:
+//     int m_Num;
+// };
+
+// ostream &operator<<(ostream &cout, MyInterger myint)
+// {
+//     cout << myint.m_Num;
+//     return cout;
+// }
+// void test01()
+// {
+//     MyInterger myint;
+//     cout << ++(++myint) << endl;
+// }
+// void test02()
+// {
+//     MyInterger myint;
+//     cout << myint++ << endl;
+//     cout << myint << endl;
+// }
+// int main()
+// {
+//     test01();
+//     test02();
+//     return 0;
+// }
+
+// #include <iostream>
+// using namespace std;
+// // 赋值运算符重载
+
+// class Person
+// {
+// public:
+//     Person(int age)
+//     {
+//         m_Age = new int(age);
+//     }
+// // private:
+//     int *m_Age;
+//     ~Person()  // 堆区重复释放
+//     {
+//         if (m_Age != NULL)
+//         {
+//             delete m_Age;
+//             m_Age = NULL;
+//         }
+//     }
+//     // 重载赋值运算符
+//     Person &operator=(Person &p)
+//     {
+//         //编译器是提供浅拷贝
+//         // m_Age = p.m_Age;
+//         // 应该先判断堆区是否有属性，如果有先释放干净，然后再深拷贝
+//         if (m_Age != NULL)
+//         {
+//             delete m_Age;
+//             m_Age = NULL;
+//         }
+//         //深拷贝
+//         m_Age = new int(*p.m_Age);
+//         return *this;
+
+//     }
+// };
+// void test01()
+// {
+//     Person p1(18);
+//     Person p2(20);
+//     Person p3(30);
+
+//     p3 = p2 = p1;
+//     cout << "p1的年龄为" << *p1.m_Age << endl;
+//     cout << "p2的年龄为" << *p2.m_Age << endl;
+// }
+// int main()
+// {
+//     test01();
+//     return 0;
+// }
+
+// #include <iostream>
+// using namespace std;
+// // 关系运算符重载
+
+// class Person
+// {
+// public:
+//     Person(string name, int age)
+//     {
+//         m_Name = name;
+//         m_Age = age;
+//     }
+
+//     string m_Name;
+//     int m_Age;
+//     // 重载关系运算符
+//     bool operator==(Person &p)
+//     {
+//         if (this->m_Name == p.m_Name && this->m_Age == p.m_Age)
+//         {
+//             return true;
+//         }
+//         return false;
+//     }
+// };
+// void test01()
+// {
+//     Person p1("Tom", 18);
+//     Person p2("Tom", 8);
+//     if (p1 == p2)
+//     {
+//         cout << "p1=p2" << endl;
+//     }
+//     else
+//     {
+//         cout << "p1!=p2" << endl;
+//     }
+// }
+// int main()
+// {
+//     test01();
+//     return 0;
+// }
+
+#include <iostream>
 using namespace std;
-// 加号运算符重载
-class Person
+// 函数运算符重载
+// 打印输出类
+class MyPrint
 {
 public:
-    // // 1.成员函数重载+号
-    // Person operator+(Person &p)
-    // {
-    //     Person temp;
-    //     temp.m_A = this ->m_A + p.m_A;
-    //     temp.m_B = this ->m_B + p.m_B;
-    //     return  temp;
-    // }
-    // 成员函数本质调用 Person p3 = p1.operator+(p2);
-    int m_A;
-    int m_B;
-
+    // 重载函数运算符
+    void operator()(string test)
+    {
+        cout << test << endl;
+    }
 };
-// 全局函数重载
-// 本质调用 Person p3 = operator+(p1, p2)
-Person operator+ (Person &p1, Person &p2)
-{
-        Person temp;
-        temp.m_A = p1.m_A + p2.m_A;
-        temp.m_B = p1.m_B + p2.m_B;
-        return  temp;
-}
-// 函数重载
-Person operator+ (Person &p1, int num)
-{
-        Person temp;
-        temp.m_A = p1.m_A + num;
-        temp.m_B = p1.m_B + num;
-        return  temp;
-}
 void test01()
 {
-    Person p1;
-    p1.m_A = 10;
-    p1.m_B = 10;
-    Person p2;
-    p2.m_A = 10;
-    p2.m_B = 10;
-
-    Person p3 = p1 + p2;
-    Person p4 = p1 + 100; // Person + int
-    cout << "p3.m_A=" << p3.m_A << endl;
-    cout << "p3.m_B=" << p3.m_B << endl;
-    cout << "p4.m_A=" << p4.m_A << endl;
-    cout << "p4.m_B=" << p4.m_B << endl;
+    MyPrint myPrint;
+    myPrint("hello world");//仿函数
 }
+// 加法类
+class MyAdd
+{
+public:
 
+    int operator()(int num1, int num2)
+    {
+        return num1 + num2;
+    }
+};
+void test02()
+{
+    MyAdd myadd;
+    int ret = myadd(100, 100);
+    // 匿名函数对象
+    cout << MyAdd()(100,100) << endl;
+    cout << ret << endl;
+}
 int main()
 {
     test01();
+    test02();
     return 0;
 }
