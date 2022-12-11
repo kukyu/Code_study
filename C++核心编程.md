@@ -1550,7 +1550,7 @@ int main()
 
 作用：通过重载递增运算符 实现自己的整型数据
 
-``` C++
+```C++
 #include <iostream>
 using namespace std;
 // 重载递增运算符
@@ -1653,13 +1653,13 @@ void test01()
     Person p1(18);
     Person p2(20);
     Person p3(30);
-  
+
     p3 = p2 = p1;
     cout << "p1的年龄为" << *p1.m_Age << endl;
     cout << "p2的年龄为" << *p2.m_Age << endl;
 }
 int main()
-{ 
+{
     test01();
     return 0;
 }
@@ -1718,8 +1718,8 @@ int main()
 - 函数调用运算符（）可以重载
 - 由于重载后使用的方法非常像函数的调用，因此被称为仿函数
 - 仿函数没有固定语法，非常灵活
-  
-``` C++
+
+```C++
 #include <iostream>
 using namespace std;
 // 函数运算符重载
@@ -1761,6 +1761,268 @@ int main()
 {
     test01();
     test02();
+    return 0;
+}
+```
+
+### 4.6 继承
+
+#### 4.6.1 继承的基本用法
+
+```C++
+#include <iostream>
+using namespace std;
+
+// class Java
+// {
+// public:
+//     void header()
+//     {
+//         cout << "首页、公开课、登录、注册...(公共头部)" << endl;
+//     }
+//     void footer()
+//     {
+//         cout << "帮助中心、交流合作、站内地图...(公共底部)" << endl;
+//     }
+//     void left()
+//     {
+//         cout << "Java、Python、C++...(公共分类列表)" << endl;
+//     }
+//     void content()
+//     {
+//         cout << "Java学科视频" << endl;
+//     }
+
+// };
+// class Python
+// {
+// public:
+//     void header()
+//     {
+//         cout << "首页、公开课、登录、注册...(公共头部)" << endl;
+//     }
+//     void footer()
+//     {
+//         cout << "帮助中心、交流合作、站内地图...(公共底部)" << endl;
+//     }
+//     void left()
+//     {
+//         cout << "Java、Python、C++...(公共分类列表)" << endl;
+//     }
+//     void content()
+//     {
+//         cout << "Python学科视频" << endl;
+//     }
+// };
+// class Cpp
+// {
+// public:
+//     void header()
+//     {
+//         cout << "首页、公开课、登录、注册...(公共头部)" << endl;
+//     }
+//     void footer()
+//     {
+//         cout << "帮助中心、交流合作、站内地图...(公共底部)" << endl;
+//     }
+//     void left()
+//     {
+//         cout << "Java、Python、C++...(公共分类列表)" << endl;
+//     }
+//     void content()
+//     {
+//         cout << "C++学科视频" << endl;
+//     }
+// };
+// 继承好处 减少代码重复
+// 语法：class 子类 ：继承方式 父类
+// 子类 也称派生类
+// 父类 也称为基类
+// 继承实现页面
+class BasePage
+{
+public:
+    void header()
+    {
+        cout << "首页、公开课、登录、注册...(公共头部)" << endl;
+    }
+    void footer()
+    {
+        cout << "帮助中心、交流合作、站内地图...(公共底部)" << endl;
+    }
+    void left()
+    {
+        cout << "Java、Python、C++...(公共分类列表)" << endl;
+    }
+};
+class Java : public BasePage
+{
+public:
+    void content()
+    {
+        cout << "Java学科视频" << endl;
+    }
+};
+class Python : public BasePage
+{
+public:
+    void content()
+    {
+        cout << "Python学科视频" << endl;
+    }
+};
+void test01()
+{
+    cout << "Java下载视频页面如下" << endl;
+    Java ja;
+    ja.header();
+    ja.footer();
+    ja.left();
+    ja.content();
+    cout << "-----------------------------" << endl;
+    cout << "Python下载视频页面如下" << endl;
+    Python py;
+    py.header();
+    py.footer();
+    py.left();
+    py.content();
+    cout << "-----------------------------" << endl;
+    cout << "C++下载视频页面如下" << endl;
+}
+int main()
+{
+    test01();
+    return 0;
+}
+```
+
+#### 4.6.2 继承方式
+
+继承方式三种：
+
+- 公共继承
+- 保护继承
+- 私有继承
+
+```C++
+#include <iostream>
+using namespace std;
+
+class Base1
+{
+public:
+    int m_A;
+protected:
+    int m_B;
+private:
+    int m_C;
+};
+
+class Son1 : public Base1
+{
+    void func()
+    {
+        m_A = 10; // 父类公共权限内容到子类依然是公共权限
+        m_B = 10; // 父类保护权限到子类依然是保护权限
+        // m_C = 10; // 私有权限不可访问
+    }
+};
+class Base2
+{
+public:
+    int m_A;
+protected:
+    int m_B;
+private:
+    int m_C;
+};
+class Son2 : protected Base2
+{
+    void func()
+    {
+        m_A = 10; // 父类公共权限内容到子类变为保护权限
+        m_B = 10; // 父类保护权限到子类依然是保护权限
+        // m_C = 10; // 私有权限不可访问
+    }
+};
+class Base3
+{
+public:
+    int m_A;
+protected:
+    int m_B;
+private:
+    int m_C;
+};
+class Son3 : private Base3
+{
+public:
+    void func()
+    {
+        m_A = 100; //父类公共成员到子类变为私有权限
+        m_B = 100; //父类保护成员到子类变为私有权限
+        // m_C = 100; // 私有变量访问不到
+    }
+
+};
+void test01()
+{
+    Son1 s1;
+    s1.m_A = 100;
+    // s1.m_B = 100; // 类外访问不到保护权限
+
+}
+void test02()
+{
+    Son2 s1;
+    // s1.m_A = 100; // 类外访问不到保护权限
+    // s1.m_B = 100; // 类外访问不到保护权限
+}
+void test03()
+{
+    Son3 s1;
+    // s1.m_A = 100; // 类外访问不到私有权限
+    // s1.m_B = 100; // 类外访问不到私有权限
+}
+
+int main()
+{
+    test01();
+    return 0;
+}
+```
+
+#### 4.6.3 继承中的对象模型
+
+```C++
+#include <iostream>
+using namespace std;
+
+class Base
+{
+public:
+    int m_A;
+protected:
+    int m_B;
+private:
+    int m_C; 
+};
+
+class Son : public Base
+{
+    // 父类中所有非静态成员属性都会被继承
+public:
+    int m_D;
+};
+
+void test01()
+{
+    cout << "size of Son =" << sizeof(Son) << endl;
+}
+
+int main()
+{
+    test01();
     return 0;
 }
 ```
