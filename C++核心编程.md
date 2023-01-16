@@ -2277,3 +2277,75 @@ vpter vbtable 虚拟指针
 v -virtual
 b -base
 ptr -pointer
+
+### 4.7 多态
+
+多态优点:
+
+- 代码组织结构清晰
+- 可读性强
+- 利于前期和后期的扩展和维护
+
+```C++
+#include<iostream>
+using namespace std;
+// 多态
+// 动物类
+class Animals
+{
+public:
+// 虚函数 可以实现地址晚绑定
+    virtual void speak()
+    {
+        cout << "动物在说话"  << endl;   
+    }
+};
+// 猫类
+class Cat : public Animals
+{
+public:
+    void speak()
+    {
+        cout << "小猫在说话" << endl;
+    }
+};
+// 狗类
+class Dog : public Animals
+{
+public:
+    void speak()
+    {
+        cout << "小狗在说话" << endl;
+    }
+};
+// 执行说话的函数
+// 地址早绑定 在编译阶段确定函数地址
+// 如果执行猫说话 函数地址不能提前绑定 需要运行阶段绑定 地址晚绑定
+
+// 动态多态满足条件
+// 1.有继承关系
+// 2.子类重写父类的虚函数 重写:函数返回值类型 函数名 参数列表完全相同
+// 动态多态的使用
+// 父类的指针或者引用 执行子类对象
+void doSpeak(Animals &animal)
+{
+    animal.speak();
+   
+}
+void test01()
+{
+    Cat cat;
+    doSpeak(cat);
+    Dog dog;
+    doSpeak(dog);
+}
+int main()
+{
+    test01();
+    return 0;
+}
+```
+
+#### 4.7.1 纯虚函数和抽象类
+
+父类中虚函数通常是毫无意义的
