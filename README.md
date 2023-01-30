@@ -1,11 +1,3 @@
-# Code_study
+# Python_crawler
 
-学习编程，简单代码记录
-
-## main
-
-## C_learn
-
-## C++_learn
-
-## Python_crawler 爬虫学习
+利用 Python 进行爬虫学习
