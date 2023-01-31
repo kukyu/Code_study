@@ -1,3 +1,11 @@
 https://www.jkl.com.cn/index.aspx
 
 uaAgent = {‘user-agent’ : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'}
+
+
+url2 = https://www.jkl.com.cn/shopLis.aspx?TypeId=10045
+
+
+<img src="/UserFiles/upload/image/20230125/1.jpg" width="165" height="117">
+
+<div class="proLis">
