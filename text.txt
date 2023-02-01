@@ -9,3 +9,9 @@ url2 = https://www.jkl.com.cn/shopLis.aspx?TypeId=10045
 <img src="/UserFiles/upload/image/20230125/1.jpg" width="165" height="117">
 
 <div class="proLis">
+
+https://www.jkl.com.cn/newsList.aspx?current=1&TypeId=10009
+
+<div class="newsLis">
+
+

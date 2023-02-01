@@ -13,13 +13,13 @@ for page in range(1, 4):
     # print(url2)
     requestData1 = requests.get(url=url2, headers=uaAgent).text  # 解析网址
     dataGet1 = etree.HTML(requestData1)
-    picturesLink = dataGet1.xpath('//div[@class = "proLis"]//@src')
+    picturesLink = dataGet1.xpath('//div[@class = "proLis"]//@src')  # 获取图片所在网址
     # print(picturesLink)
     list1 = list1 + picturesLink  # 三页的列表合并为一个列表
 # print(list1)
 picturesLink2 = list1
 for i in picturesLink2:
-    url3 = "http://www.jkl.com.cn" + i
+    url3 = "http://www.jkl.com.cn" + i  # 网址添加头文件
     # print(url3)
     picturesData = requests.get(url=url3, headers=uaAgent).content  # 获取图片内容
     picName = url3.split("/")[-1]
