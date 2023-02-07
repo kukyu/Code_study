@@ -1,8 +1,8 @@
 import requests
 from lxml import etree
 import os
-if not os.path.exists('E:\\Python\\Python_crawler\\Get_doc'):
-    os.mkdir('E:\\Python\\Python_crawler\\Get_doc')
+if not os.path.exists('.\Jingkelong_crawler\Get_doc'):
+    os.mkdir('.\Jingkelong_crawler\Get_doc')
 url1 = "https://www.jkl.com.cn/newsList.aspx?current=1&TypeId=10009"
 uaAgent = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'}
@@ -43,7 +43,7 @@ for k, v in docDict.items():
     docType = v.split(".")[-1]
     # print(docType)
     docData = requests.get(url=v, headers=uaAgent).content  # 获取文档内容
-    docAddr = "E:\\Python\\Python_crawler\\Get_doc\\" + k + '.' + docType  # 保存文件地址
+    docAddr = ".\Jingkelong_crawler\Get_doc\\" + k + '.' + docType  # 保存文件地址
     # 二进制数据写入本地
     with open(docAddr, 'wb') as ret:
         ret.write(docData)

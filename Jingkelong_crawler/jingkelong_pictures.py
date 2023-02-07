@@ -1,8 +1,8 @@
 import requests
 from lxml import etree
 import os
-if not os.path.exists('E:\\Python\\Python_crawler\\Get_pictures'):
-    os.mkdir('E:\\Python\\Python_crawler\\Get_pictures')
+if not os.path.exists('.\Jingkelong_crawler\Get_pictures'):
+    os.mkdir('.\Jingkelong_crawler\Get_pictures')
 url1 = "https://www.jkl.com.cn/phoLis.aspx"
 uaAgent = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'}
@@ -23,7 +23,7 @@ for i in picturesLink2:
     # print(url3)
     picturesData = requests.get(url=url3, headers=uaAgent).content  # 获取图片内容
     picName = url3.split("/")[-1]
-    picAddr = "E:\\Python\\Python_crawler\\Get_pictures\\" + picName  # 保存文件地址
+    picAddr = ".\Jingkelong_crawler\Get_pictures\\" + picName  # 保存文件地址
     print(picAddr)
     with open(picAddr, 'wb') as ret:
         ret.write(picturesData)
