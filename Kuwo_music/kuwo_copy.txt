@@ -1,0 +1,7 @@
+https://www.kuwo.cn/api/www/search/searchMusicBykeyWord?key=%E5%B0%8F%E9%98%BF%E4%B8%83&pn=1&rn=20&httpsStatus=1&reqId=a0a33211-a8ff-11ed-b5f5-33cbc2c7b1ab
+
+
+{"code":200,"msg":"success","reqId":"937085248ce72b3d75f67767226c56e1","data":{"url":"https://other-web-nf01-sycdn.kuwo.cn/533ce5e43dc08e734c45e35938215fd7/63e5d4e2/resource/n2/55/11/387348176.mp3"},"profileId":"site","curTime":1676006626405,"success":true}
+
+
+https://www.kuwo.cn/api/v1/www/music/playUrl?mid=240917139&type=music&httpsStatus=1&reqId=178128d0-a903-11ed-b1af-9d82c033fea0
