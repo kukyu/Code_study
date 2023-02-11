@@ -31,5 +31,6 @@ while(True):
         data = pd.DataFrame({"输入":[myInput], "翻译结果":[transRes]})
         data.to_csv("./Youdao_dict/翻译结果.csv", index=False, header=0, mode="a", encoding="ANSI")
         time.sleep(3)
+        
 
 
