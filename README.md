@@ -23,3 +23,15 @@
 ## STL_string_vector  STL string容器
 
 ## STL_vector STL vector容器
+
+## STL_stack 栈容器
+
+## STL_queue 队列容器
+
+## STL_list 链表容器
+
+## STL_set set容器
+
+## STL_map map容器
+
+## STL_func_obj 函数对象
