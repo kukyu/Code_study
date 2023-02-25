@@ -11,9 +11,9 @@ class Number1Spider(scrapy.Spider):
         # shopName = response.xpath(
         #     '//span[@class="con01"]/text()').extract()[0]  # 第一个数据
         shopName = response.xpath(
-            '//span[@class="con01"]/text()').extract() # 第一个数据
+            '//span[@class="con01"]/text()').extract() 
         shopAddr = response.xpath(
-            '//span[@class="con02"]/text()').extract()  # 第一个数据
+            '//span[@class="con02"]/text()').extract()  
         # shopAddr = response.xpath(
         #     '//span[@class="con02"]/text()').extract_first()  # 第一个数据
         # print(shopAddr)
